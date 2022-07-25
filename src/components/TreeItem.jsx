@@ -7,20 +7,25 @@ function TreeItem(props) {
     return (
         <div>
             <Row>
-                <NewLeaf
+                <Col style={{marginLeft: `${props.branch.depth * 3}vw`}}><NewLeaf
                     branchNameValue={props.branch.value}
-                    addBranch={props.addBranch}/>
+                    addBranch={props.addBranch}
+                    id={props.branch.id}
+                depth={props.branch.depth}/></Col>
+                {/*                <NewLeaf
+                    branchNameValue={props.branch?.value}
+                    addBranch={props.addBranch}/>*/}
 
-{/*                {props.branch.childNodes
+                {/*                {props.branch.childNodes.length
                     ? <>
-                        <Col></Col>
                         <Col><NewLeaf
                             branchNameValue={props.branch.value}
                             addBranch={props.addBranch}/></Col>
                     </>
                     :
                     <>
-                        <Col><NewLeaf
+                                                <Col></Col>
+                        <Col style={{marginLeft: `${props.branch.depth * 3}vw`}}><NewLeaf
                             branchNameValue={props.branch.value}
                             addBranch={props.addBranch}/></Col>
                     </>
