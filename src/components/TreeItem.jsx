@@ -11,7 +11,8 @@ function TreeItem(props) {
                     branchNameValue={props.branch.value}
                     addBranch={props.addBranch}
                     id={props.branch.id}
-                depth={props.branch.depth}/></Col>
+                    depth={props.branch.depth}
+                    removeBranch={props.removeBranch}/></Col>
                 {/*                <NewLeaf
                     branchNameValue={props.branch?.value}
                     addBranch={props.addBranch}/>*/}
@@ -37,7 +38,3 @@ function TreeItem(props) {
 }
 
 export default TreeItem;
-
-/*
-
-<Col><NewLeaf branchNameInit={props.branch.value}/></Col>*/

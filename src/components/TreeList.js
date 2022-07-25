@@ -13,9 +13,12 @@ function TreeList(props) {
                                 <TreeItem
                                     key={branch.id}
                                     branch={branch}
-                                    addBranch={props.addBranch}/>
+                                    addBranch={props.addBranch}
+                                    removeBranch={props.removeBranch}/>
                             </div>
-                            <TreeList branches={branch.childNodes} addBranch={props.addBranch}/>
+                            <TreeList branches={branch.childNodes}
+                                      addBranch={props.addBranch}
+                                      removeBranch={props.removeBranch}/>
                         </div>
                     )
                 }

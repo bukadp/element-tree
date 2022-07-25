@@ -8,7 +8,9 @@ import TreeList from "./components/TreeList";
 function App() {
     const [launch, setLaunch] = useState(false)
     const [branches, setBranches] = useState([
-        {
+        {id: 0, value: 'root', parentId: null, rootElement: true, childNodes: []}])
+
+/*        {
             id: 0, value: 'root', parentId: null, rootElement: true, childNodes: [
                 {id: 1, value: 'first element', parentId: 0, rootElement: false, childNodes: []},
                 {
@@ -24,21 +26,44 @@ function App() {
                 {id: 3, value: 'third element', parentId: 0, rootElement: false, childNodes: []},
             ]
         },
-        {id: 10, value: 'rootEEE', parentId: null, rootElement: true, childNodes: []}
-
-    ])
+    ])*/
 
     const addBranch = (value, parentId, branchDepth) => {
-        debugger
         let branch = {
-            id: 111,
+            id: Date.now(),
             value: value,
             parentId: parentId,
             rootElement: false,
-            depth: branchDepth+1,
+            depth: branchDepth + 1,
             childNodes: []
         }
         addBranchInData(branches, parentId, branch)
+    }
+
+
+
+    const removeBranch = (itemId) => {
+        handlerRemove (itemId, branches)
+    }
+
+    const handlerRemove = (itemId, arr) => {
+
+        arr.forEach(function (o) {
+            let condition = o.childNodes.length
+/*            if (o.find(element => element.id === itemId)) {*/
+                o.childNodes = o.childNodes.filter(branch => branch.id !== itemId);
+
+                if (condition === o.childNodes.length) {
+                    handlerRemove (itemId, o.childNodes)
+                }
+/*            }
+            else {
+                return handlerRemove(itemId, o.childNodes);
+            }*/
+
+        })
+
+        setBranches([...branches])
     }
 
     const addBranchInData = (arr, itemId, addBranch) => {
@@ -69,17 +94,18 @@ function App() {
     return (
         <div>
             <Container>
-                <div className={launch ? "hidden" : "center"}>
+                <div className={launch ? "invisible" : "center"}>
                     <Button
                         variant="primary"
                         onClick={createRoot}
-                        className={launch ? "hidden" : ""}
+                        className={launch ? "invisible" : ""}
                     >create root</Button>
                 </div>
                 <div>
                     {launch ? <TreeList
                         branches={branches}
-                        addBranch={addBranch}/> : ""}
+                        addBranch={addBranch}
+                        removeBranch={removeBranch}/> : ""}
                 </div>
 
             </Container>
@@ -88,70 +114,3 @@ function App() {
 }
 
 export default App;
-
-
-/*   const findIdRecursive = (arr, itemId, addBranch) => {
-       debugger
-       let res
-       const newBranches =  arr.map(branch => {
-
-            if (branch.id === itemId) {
-                debugger
-                console.log(branch)
-                const childNodes = [...branch.childNodes, addBranch]
-                console.log("childNodes", childNodes)
-                console.log("!!!!!!!!!!", {...branch, childNodes})
-                res = {...branch, childNodes}
-            }
-            else {
-                return findIdRecursive(branch.childNodes, itemId, addBranch);
-            }
-
-              return res
-        })
-       console.log("newBranches", [newBranches])
-       console.log("res", [res])
-       setBranches(
-           [
-               ...branches,
-               res
-           ]
-       )
-       console.log("branches", branches)
-   }*/
-
-/*    const findIdRecursiveReduce = (arr, itemId, nestingKey, branch) => {
-        const newBranches = arr.reduce((a, item) => {
-            debugger
-            console.log('a', a)
-            if (a) {
-                console.log("Aaaaaaaaaaaaaaaaa", {...a, childNodes: [...a.childNodes, branch]});
-/!*                const childNodes = {...a, childNodes: [...a.childNodes, branch]}
-                console.log("childNodes", childNodes)
-                console.log("!!!!!!!!!!", {...branch, childNodes})*!/
-
-                return a
-
-                //-------{...a, childNodes: [...a.childNodes, branch]};
-            }
-
-            if (item.id === itemId) return item;
-            if (item[nestingKey]) return findIdRecursiveReduce(item[nestingKey], itemId, nestingKey, branch)
-        }, null)
-
-        if (newBranches) {
-            console.log('newBranches', newBranches)
-            setBranches(
-                [
-                    ...branches,
-                    {...newBranches, childNodes: [...newBranches.childNodes, branch]}
-                ]
-            )
-            console.log('branches', branches)
-            /!*return {...newBranches, childNodes: [...newBranches.childNodes, branch]}*!/
-        }
-
-
-    };*/
-
-
