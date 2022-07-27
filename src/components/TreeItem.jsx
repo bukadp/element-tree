@@ -1,38 +1,25 @@
-import React from "react";
-import {Col, Row} from "react-bootstrap";
+import React from 'react';
+import {Col, Container, Row} from "react-bootstrap";
 import NewLeaf from "./NewLeaf";
+
 
 function TreeItem(props) {
 
     return (
-        <div>
-            <Row>
-                <Col style={{marginLeft: `${props.branch.depth * 3}vw`}}><NewLeaf
-                    branchNameValue={props.branch.value}
-                    addBranch={props.addBranch}
-                    id={props.branch.id}
-                    depth={props.branch.depth}
-                    removeBranch={props.removeBranch}/></Col>
-                {/*                <NewLeaf
-                    branchNameValue={props.branch?.value}
-                    addBranch={props.addBranch}/>*/}
+        <>
+            <Container>
+                <Row>
+                    <Col style={{marginLeft: `${props.branch.depth * 10}px`}}><NewLeaf
+                        branch={props.branch}
 
-                {/*                {props.branch.childNodes.length
-                    ? <>
-                        <Col><NewLeaf
-                            branchNameValue={props.branch.value}
-                            addBranch={props.addBranch}/></Col>
-                    </>
-                    :
-                    <>
-                                                <Col></Col>
-                        <Col style={{marginLeft: `${props.branch.depth * 3}vw`}}><NewLeaf
-                            branchNameValue={props.branch.value}
-                            addBranch={props.addBranch}/></Col>
-                    </>
-                }*/}
-            </Row>
-        </div>
+                        addBranch={props.addBranch}
+
+                        removeBranch={props.removeBranch}
+
+                    /></Col>
+                </Row>
+            </Container>
+        </>
 
     )
 }

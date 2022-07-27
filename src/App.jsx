@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Col, Container, Row} from "react-bootstrap";
-import NewLeaf from "./components/NewLeaf";
+import {Button, Container} from "react-bootstrap";
 import TreeList from "./components/TreeList";
 
 function App() {
@@ -11,7 +10,7 @@ function App() {
         {id: 0, value: 'root', parentId: null, rootElement: true, childNodes: []}])
 
 /*        {
-            id: 0, value: 'root', parentId: null, rootElement: true, childNodes: [
+            id: 0, value: 'root', parentId: "null", rootElement: true, childNodes: [
                 {id: 1, value: 'first element', parentId: 0, rootElement: false, childNodes: []},
                 {
                     id: 2, value: 'second element', parentId: 0, rootElement: false, childNodes: [
@@ -41,28 +40,18 @@ function App() {
     }
 
 
-
     const removeBranch = (itemId) => {
-        handlerRemove (itemId, branches)
+        handlerRemove(itemId, branches)
     }
 
     const handlerRemove = (itemId, arr) => {
-
         arr.forEach(function (o) {
             let condition = o.childNodes.length
-/*            if (o.find(element => element.id === itemId)) {*/
-                o.childNodes = o.childNodes.filter(branch => branch.id !== itemId);
-
-                if (condition === o.childNodes.length) {
-                    handlerRemove (itemId, o.childNodes)
-                }
-/*            }
-            else {
-                return handlerRemove(itemId, o.childNodes);
-            }*/
-
+            o.childNodes = o.childNodes.filter(branch => branch.id !== itemId);
+            if (condition === o.childNodes.length) {
+                handlerRemove(itemId, o.childNodes)
+            }
         })
-
         setBranches([...branches])
     }
 
@@ -78,7 +67,6 @@ function App() {
         setBranches([...branches])
     }
 
-
     const createRoot = () => {
         setLaunch(true)
         addDepth(branches)
@@ -91,8 +79,9 @@ function App() {
         })
     }
 
+
     return (
-        <div>
+        <>
             <Container>
                 <div className={launch ? "invisible" : "center"}>
                     <Button
@@ -105,11 +94,11 @@ function App() {
                     {launch ? <TreeList
                         branches={branches}
                         addBranch={addBranch}
-                        removeBranch={removeBranch}/> : ""}
+                        removeBranch={removeBranch}
+                    /> : ""}
                 </div>
-
             </Container>
-        </div>
+        </>
     );
 }
 
