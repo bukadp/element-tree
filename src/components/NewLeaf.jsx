@@ -7,21 +7,35 @@ import Collapse from 'react-bootstrap/Collapse'
 import TreeList from "./TreeList";
 
 function NewLeaf(props) {
-
     const [show, setShow] = useState(false);
     const [branchName, setBranchName] = useState('');
     const [branchId, setBranchId] = useState(null);
     const [branchDepth, setBranchDepth] = useState(null);
     const [openCaret, setOpenCaret] = useState(true)
     const [open, setOpen] = useState(true);
-
+    const [error, setError] = useState(false);
 
     const handleClose = () => setShow(false);
-    const handleAddName = () => {
-        props.addBranch(branchName, branchId, branchDepth)
-        setShow(false)
-        setBranchName('')
+
+    const validateForm = () => {
+        if (!branchName || branchName === '') {
+            return 'Please type some branch name'
+        } else {
+            return
+        }
     }
+
+    const handleAddName = () => {
+        const formError = validateForm()
+        if (!!formError) {
+            setError(formError)
+        } else {
+            props.addBranch(branchName, branchId, branchDepth)
+            setShow(false)
+            setBranchName('')
+        }
+    }
+
     const handleOpenCaret = () => {
         setOpen(true)
         setOpenCaret(true)
@@ -42,14 +56,10 @@ function NewLeaf(props) {
         props.removeBranch(id)
     }
 
-
     return (
-
-        <div className={"px-3 my-2"}>
-
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#0d6efd"
-                 className="bi bi-plus-circle-dotted mx-1" viewBox="0 0 16 16"
+        <div className="px-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#828282"
+                 className="bi bi-plus-circle-dotted mx-1 svg-plus" viewBox="0 0 16 16"
                  onClick={() => {
                      addElement(props.branch.id, props.branch.depth)
                  }}>
@@ -58,8 +68,8 @@ function NewLeaf(props) {
             </svg>
             {props.branch.id === 0
                 ? <span></span>
-                : <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#dc3545"
-                       className="bi bi-dash-circle-dotted mx-1" viewBox="0 0 16 16"
+                : <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#828282"
+                       className="bi bi-dash-circle-dotted mx-1 svg-minus" viewBox="0 0 16 16"
                        onClick={() => {
                            removeElement(props.branch.id)
                        }}>
@@ -68,14 +78,10 @@ function NewLeaf(props) {
                 </svg>
             }
             <div>
-
-                <div className="fs-5 mx-1"
-
-
-                >
+                <div className="fs-5 mx-1">
                     {props.branch.childNodes.length > 0
                         ? openCaret
-                            ? <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#000000"
+                            ? <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#0d6efd"
                                    className="bi bi-caret-down-fill" viewBox="0 0 16 16"
                                    variant="link"
                                    aria-controls={props.branch.id.toString()}
@@ -92,14 +98,13 @@ function NewLeaf(props) {
                                 <path
                                     d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
                             </svg>
-                        : <span className="ps-3"></span>
+                        : <span className="ps-2">|</span>
                     }
-
-                    {props.branch.value}
+                    <div>
+                        {props.branch.value}
+                    </div>
                 </div>
-
             </div>
-
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -107,14 +112,20 @@ function NewLeaf(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <FloatingLabel controlId="floatingTextarea2">
-                        <Form.Control
-                            as="textarea"
-                            style={{height: '100px'}}
-                            name="branchName"
-                            value={branchName}
-                            onChange={e => setBranchName(e.target.value)}
-
-                        />
+                        <div className="has-validation">
+                            <Form.Control
+                                as="textarea"
+                                isInvalid={!!error}
+                                // isInvalid={!branchName}
+                                style={{height: '100px'}}
+                                name="branchName"
+                                value={branchName}
+                                onChange={e => setBranchName(e.target.value)}
+                            />
+                            <Form.Control.Feedback type='invalid'>
+                                {error}
+                            </Form.Control.Feedback>
+                        </div>
                     </FloatingLabel>
                 </Modal.Body>
                 <Modal.Footer>
@@ -134,7 +145,6 @@ function NewLeaf(props) {
                 </div>
             </Collapse>
         </div>
-
     )
 }
 

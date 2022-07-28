@@ -7,7 +7,6 @@ function TreeList(props) {
         <div>
             {props.branches?.map(branch => {
                     return (
-
                         <div>
                             <div>
                                 <TreeItem
@@ -18,7 +17,6 @@ function TreeList(props) {
                                 />
                             </div>
                         </div>
-
                     )
                 }
             )}

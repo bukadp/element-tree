@@ -1,31 +1,17 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Container} from "react-bootstrap";
 import TreeList from "./components/TreeList";
+import {loadState, saveState} from "./utils/localstorage";
 
 function App() {
     const [launch, setLaunch] = useState(false)
-    const [branches, setBranches] = useState([
-        {id: 0, value: 'root', parentId: null, rootElement: true, childNodes: []}])
+    const [branches, setBranches] = useState(() => initialState())
 
-/*        {
-            id: 0, value: 'root', parentId: "null", rootElement: true, childNodes: [
-                {id: 1, value: 'first element', parentId: 0, rootElement: false, childNodes: []},
-                {
-                    id: 2, value: 'second element', parentId: 0, rootElement: false, childNodes: [
-                        {
-                            id: 4, value: 'four element', parentId: 2, rootElement: false, childNodes: [
-                                {id: 5, value: 'fifth element', parentId: 4, rootElement: false, childNodes: []},
-                                {id: 6, value: 'six element', parentId: 4, rootElement: false, childNodes: []},
-                            ]
-                        },
-                    ]
-                },
-                {id: 3, value: 'third element', parentId: 0, rootElement: false, childNodes: []},
-            ]
-        },
-    ])*/
+    useEffect(() => {
+        saveState(branches)
+    }, [branches]);
 
     const addBranch = (value, parentId, branchDepth) => {
         let branch = {
@@ -38,7 +24,6 @@ function App() {
         }
         addBranchInData(branches, parentId, branch)
     }
-
 
     const removeBranch = (itemId) => {
         handlerRemove(itemId, branches)
@@ -67,18 +52,16 @@ function App() {
         setBranches([...branches])
     }
 
-    const createRoot = () => {
-        setLaunch(true)
-        addDepth(branches)
+    function initialState() {
+        const initialStateFromLocalstorage = loadState()
+        if (initialStateFromLocalstorage === null) {
+            return [
+                {id: 0, value: 'root', parentId: null, rootElement: true, depth: 0, childNodes: []}
+            ]
+        } else {
+            return initialStateFromLocalstorage
+        }
     }
-
-    function addDepth(arr, depth = 0) {
-        arr.forEach(obj => {
-            obj.depth = depth
-            addDepth(obj.childNodes, depth + 1)
-        })
-    }
-
 
     return (
         <>
@@ -86,7 +69,7 @@ function App() {
                 <div className={launch ? "invisible" : "center"}>
                     <Button
                         variant="primary"
-                        onClick={createRoot}
+                        onClick={() => setLaunch(true)}
                         className={launch ? "invisible" : ""}
                     >create root</Button>
                 </div>

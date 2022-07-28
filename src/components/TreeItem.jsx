@@ -8,19 +8,16 @@ function TreeItem(props) {
     return (
         <>
             <Container>
-                <Row>
-                    <Col style={{marginLeft: `${props.branch.depth * 10}px`}}><NewLeaf
+                <Row >
+                    <Col >
+                        <NewLeaf
                         branch={props.branch}
-
                         addBranch={props.addBranch}
-
                         removeBranch={props.removeBranch}
-
                     /></Col>
                 </Row>
             </Container>
         </>
-
     )
 }
 
